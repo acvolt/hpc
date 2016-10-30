@@ -35,7 +35,7 @@ error:
 	$(error Invalid configuration, please check your inputs)
 endif
 
-SOURCEFILES := HeatPumpController.cpp LEDBackpack.cpp OW.cpp Smith_I2C.cpp
+SOURCEFILES := HeatPumpController.cpp LEDBackpack.cpp Smith_I2C.cpp
 EXTERNAL_LIBS := 
 EXTERNAL_LIBS_COPIED := $(foreach lib, $(EXTERNAL_LIBS),$(BINARYDIR)/$(notdir $(lib)))
 

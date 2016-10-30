@@ -26,6 +26,15 @@
     <ClCompile Include="HeatPumpController.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
+    <ClCompile Include="LEDBackpack.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="Smith_I2C.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="OW.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Makefile" />
@@ -41,5 +50,19 @@
     <None Include="HeatPumpController-Release.vgdbsettings">
       <Filter>VisualGDB settings</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="HeatPumpController.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="LEDBackpack.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Smith_I2C.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="OW.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
