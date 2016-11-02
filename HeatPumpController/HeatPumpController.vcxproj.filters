@@ -35,6 +35,12 @@
     <ClCompile Include="OW.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
+    <ClCompile Include="MCP23008.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="LiquidCrystal.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Makefile" />
@@ -62,6 +68,12 @@
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="OW.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="MCP23008.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="LiquidCrystal.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>

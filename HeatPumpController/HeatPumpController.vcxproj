@@ -65,6 +65,8 @@
   <ItemGroup>
     <ClCompile Include="HeatPumpController.cpp" />
     <ClCompile Include="LEDBackpack.cpp" />
+    <ClCompile Include="LiquidCrystal.cpp" />
+    <ClCompile Include="MCP23008.cpp" />
     <ClCompile Include="OW.cpp" />
     <ClCompile Include="Smith_I2C.cpp" />
   </ItemGroup>
@@ -78,6 +80,8 @@
   <ItemGroup>
     <ClInclude Include="HeatPumpController.h" />
     <ClInclude Include="LEDBackpack.h" />
+    <ClInclude Include="LiquidCrystal.h" />
+    <ClInclude Include="MCP23008.h" />
     <ClInclude Include="OW.h" />
     <ClInclude Include="Smith_I2C.h" />
   </ItemGroup>

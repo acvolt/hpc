@@ -1,11 +1,11 @@
 #pragma once
 #include <unistd.h>
 #include <fcntl.h>
-#include <sys/ioctl.h>
-#include <linux/i2c-dev.h>
+//#include <sys/ioctl.h>
+#//include <linux/i2c-dev.h>
 #include <iostream>
 #include <stdio.h>
-#include <wiringPiI2C.h>
+//#include <wiringPiI2C.h>
 
 #include <stdint.h>
 
@@ -71,8 +71,10 @@ class Smith_I2C
 {
 public:
 	Smith_I2C(void);
+	Smith_I2C(uint8_t addr);
 	~Smith_I2C();
 	int i2cSetup();
+	int i2cSetup(uint8_t addr);
 	unsigned char i2cReadByte(int fd, __uint8_t addr);
 	unsigned char i2cReadRegByte(int, __uint8_t, __uint8_t);
 	void i2cReadBlock(__uint8_t addr,  void* buffer, int length);
@@ -84,10 +86,13 @@ public:
 	void i2cWriteByteData(__uint8_t addr, __uint8_t reg, __uint8_t value);
 	void directWriteByte(__uint8_t addr, uint8_t value);
 
-	unsigned char i2cReadRegByte(int fd, __uint8_t reg);
+	uint8_t smbus_read_reg_byte(uint8_t addr, uint8_t register);
+	int smbus_write_reg_byte(uint8_t addr, uint8_t register, uint8_t value);
+//	int Smith_I2C::i2c_smbus_access(int fd, char rw, uint8_t command, int size, union i2c_smbus_data *data);
 
 protected:
 	unsigned int i2cDevice;
+	unsigned int i2cAddr;
 
 
 

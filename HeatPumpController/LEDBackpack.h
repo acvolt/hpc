@@ -39,6 +39,7 @@ public:
 protected:
 	__uint32_t i2c_file;
 	__uint32_t i2c_addr;
+
 };
 
 class Smith_AlphaNum4 : public Smith_LEDBackpack {

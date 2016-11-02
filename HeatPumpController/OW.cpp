@@ -181,7 +181,7 @@ void OW::wireWriteByte(uint8_t data, uint8_t power)
 
 uint8_t OW::wireReadByte()
 {
-	__uint8_t registers[3] = { DS2482_COMMAND_READBYTE, DS2482_COMMAND_SRP, DS2482_POINTER_DATA };
+
 	waitOnBusy();
 
 //	OWi2cDev.i2cMultiWriteOneTwo(i2cAddr, registers, 3);
@@ -195,7 +195,7 @@ uint8_t OW::wireReadByte()
 
 bool OW::begin(uint8_t addr)
 {
-	uint8_t byte, config, buffer[1];
+	uint8_t byte, config;
 	OWi2cDev.i2cSetup();
 	i2cAddr = addr;
 
@@ -226,6 +226,8 @@ bool OW::begin(uint8_t addr)
 //	OWi2cDev.i2cWriteBlock(i2cAddr, reg, buffer, 1 );
 //	byte = OWi2cDev.i2cReadByte(0, i2cAddr);
 //	printf("\n Reg Byte (try 2) is %x \n", byte);
+
+	return true;
 };
 
 int OW::search() {
@@ -396,7 +398,7 @@ int OW::OWNext()
 	int id_bit_number, last_zero, rom_byte_number, search_result, id_bit, cmp_id_bit;
 	uint8_t rom_byte_mask, search_direction, reg[1], buffer[1], byte;
 
-	bool owb;
+//	bool owb;
 
 	//initialize for search
 	id_bit_number = 1;
@@ -626,7 +628,7 @@ void OW::OWFamilySkipSetup()
 int OW::OWReset()
 {
 //	cout << "In 1-Wire Reset Function" << endl;
-	uint8_t reg[1] = { DS2482_COMMAND_RESETWIRE }; //Driver Search command
+//	uint8_t reg[1] = { DS2482_COMMAND_RESETWIRE }; //Driver Search command
 	//uint8_t buffer[1] = { 0xF0 }; //OW Search Command
 	uint8_t status = 0;
 	//OWi2cDev.i2cWriteByte(i2cAddr, reg[1]);
@@ -725,7 +727,7 @@ void DS18B20::setResolution(uint8_t* ROM, uint8_t resolution)
 {
 	uint8_t config_register;
 	uint8_t scratchpad[9];
-	char i;
+	uint8_t i;
 	switch (resolution) {
 	case 9://93.75ms conversion time .5C
 		config_register = 0b00011111;
@@ -822,7 +824,7 @@ void DS18B20::startConversion(uint8_t* ROM)
 
 float DS18B20::getTempF(uint8_t* ROM)
 {
-	uint8_t scratchpad[9], sign = 0;
+	uint8_t scratchpad[9];
 	readScratchpad(ROM, scratchpad);
 
 	short int temperature;
@@ -841,10 +843,8 @@ float DS18B20::getTempF(uint8_t* ROM)
 	{
 		return DEVICE_DISCONNECTED_F;
 	}
-
-	float tempRead = ((scratchpad[1] << 8 | scratchpad[0]));
-	printf("Temp is %f  %f \n",  conversion, conversion*1.8 + 32);
-	//return((float)(temperature.temperature * 0.0140625) + 32);
+	printf("ROM[1] %x Temperature is %f\n", ROM[1], ((conversion*1.8 + 32)));
+//	return((float)(temperature.temperature * 0.0140625) + 32);
 	return ((conversion*1.8)+32);
 	//First byte is Temp LSB, 2nd is Temp MSB
 
@@ -854,7 +854,7 @@ float DS18B20::getTempF(uint8_t* ROM)
 
 float DS18B20::getTempC(uint8_t* ROM)
 {
-
+	return -999.1;
 }
 
 

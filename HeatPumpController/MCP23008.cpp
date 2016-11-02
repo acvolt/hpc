@@ -1,9 +1,11 @@
 
 
 #include "MCP23008.h"
+#include "Smith_I2C.h"
 
 
-Smith_I2C _i2cdev = Smith_I2C();
+
+Smith_I2C _i2cdev = Smith_I2C(0x24);
 
 
 /**
@@ -33,13 +35,17 @@ uint8_t MCP23008::readRegister(uint8_t addr) {
 	return wirerecv();
 
 	*/
-	uint8_t buffer[1];
 
-	_i2cdev.i2cReadBlock(i2caddr, &addr, buffer, 1);
+//	_i2cdev.i2cReadBlock(i2caddr, &addr, buffer, 1);
 
-	return buffer[1];
+//	return _i2cdev.i2cReadRegByte(0, i2caddr, addr);
+	return _i2cdev.smbus_read_reg_byte(i2caddr, addr);
 }
 
+void MCP23008::writeGPIO(uint8_t value)
+{
+	writeRegister(MCP23008_GPIO, value);
+}
 
 /**
 * Writes a given register
@@ -53,8 +59,15 @@ void MCP23008::writeRegister(uint8_t regAddr, uint8_t regValue) {
 	Wire.endTransmission();
 	*/
 
-	_i2cdev.i2cWriteBlock(i2caddr, &regAddr, &regValue, 1);
+//	_i2cdev.i2cWriteBlock(i2caddr, &regAddr, &regValue, 1);
+	printf("Write Register %x with value %x \n", regAddr, regValue);
+//	_i2cdev.i2cWriteByteData(i2caddr, regAddr, regValue);
+//	printf("WR return is %d \n",);
+	_i2cdev.smbus_write_reg_byte(i2caddr, regAddr, regValue);
+//	usleep(1000);
 
+	uint8_t temp = readRegister(regAddr);
+	printf("After writing register reads %x \n", temp);
 }
 
 
@@ -70,11 +83,12 @@ void MCP23008::updateRegisterBit(uint8_t pin, uint8_t pValue, uint8_t portAaddr)
 	regValue = readRegister(regAddr);
 
 	// set the value for the particular bit
-	//bitWrite(regValue, bit, pValue);
 
-	regValue = regValue & ((pValue & 1) << bit);
-
+	printf("A Pin is %x pv is %x Orig is %x Register is %x RegValue is %x \n", pin, pValue, portAaddr, regAddr, regValue);
+	bitWrite(regValue, bit, pValue);
+	printf("B Pin is %x pv is %x Orig is %x Register is %x RegValue is %x \n", pin, pValue, portAaddr, regAddr, regValue);
 	writeRegister(regAddr, regValue);
+	printf("\n");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -89,17 +103,28 @@ void MCP23008::begin(uint8_t addr) {
 	i2caddr = addr;
 
 	_i2cdev.i2cSetup();
-
+	writeRegister(MCP23008_IODIR, 0xFF);
+	writeRegister(MCP23008_IPOL, 0x0);
+	writeRegister(MCP23008_GPINTEN, 0);
+	writeRegister(MCP23008_DEFVAL, 0);
+	writeRegister(MCP23008_INTCON, 0);
+	writeRegister(MCP23008_IOCON, 0);
+	writeRegister(MCP23008_GPPU, 0);
+	writeRegister(MCP23008_INTF, 0);
+	writeRegister(MCP23008_INTCAP, 0);
+	writeRegister(MCP23008_GPIO, 0);
+	printf("Just ended write things to 0\n");
+	writeRegister(MCP23008_IOCON, 0x20);
 	// set defaults!
-	// all inputs on port A and B
-	writeRegister(MCP23008_IODIR, 0xff);
+
+
 }
 
 /**
 * Initializes the default MCP23017, with 000 for the configurable part of the address
 */
 void MCP23008::begin(void) {
-	begin(0);
+	begin(0x24);
 }
 
 /**
@@ -127,9 +152,9 @@ uint8_t MCP23008::readGPIO(void) {
 	Wire.requestFrom(MCP23008_ADDRESS | i2caddr, 1);
 	return wirerecv();
 	*/
-	uint8_t reg[] = { MCP23008_GPIO };
 
-	
+	//return _i2cdev.i2cReadRegByte(0, i2caddr, MCP23008_GPIO);
+	return _i2cdev.smbus_read_reg_byte(i2caddr, MCP23008_GPIO);
 }
 
 /**
@@ -144,14 +169,21 @@ void MCP23008::digitalWrite(uint8_t pin, uint8_t d) {
 
 	// read the current GPIO output latches
 	uint8_t regAddr = regForPin(pin, MCP23008_OLAT);
-	gpio = readRegister(regAddr);
+	
+	printf("GPIO Register Address %x \n", regAddr);
+	
+	gpio = readRegister(MCP23008_GPIO);
+
+	printf("GPIO is %x PIN is %x \n", gpio, pin);
 
 	// set the pin and direction
 	bitWrite(gpio, bit, d);
 
+	printf("GPIO is %x after bitWrite \n", gpio);
+
 	// write the new GPIO
-	regAddr = regForPin(pin, MCP23008_GPIO);
-	writeRegister(regAddr, gpio);
+//	regAddr = regForPin(pin, MCP23008_GPIO);
+	writeRegister(MCP23008_GPIO, gpio);
 }
 
 void MCP23008::pullUp(uint8_t p, uint8_t d) {
@@ -159,9 +191,9 @@ void MCP23008::pullUp(uint8_t p, uint8_t d) {
 }
 
 uint8_t MCP23008::digitalRead(uint8_t pin) {
-	uint8_t bit = bitForPin(pin);
-	uint8_t regAddr = regForPin(pin, MCP23008_GPIO);
-	return (readRegister(regAddr) >> bit) & 0x1;
+//	uint8_t bit = bitForPin(pin);
+//	uint8_t regAddr = regForPin(pin, MCP23008_GPIO);
+	return (readRegister(MCP23008_GPIO) >> pin) & 0x1;
 }
 
 /**

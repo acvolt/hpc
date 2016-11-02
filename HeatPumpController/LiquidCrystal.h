@@ -5,11 +5,15 @@
 #include <inttypes.h>
 #include <iostream>
 #include <vector>
+#include <cstring>
+#include <string>
 //#include "Print.h"
 #include "MCP23008.h"
 #include <unistd.h>
 #include <printf.h>
 
+
+using namespace std;
 // commands
 #define LCD_CLEARDISPLAY 0x01
 #define LCD_RETURNHOME 0x02
@@ -48,25 +52,95 @@
 #define LCD_5x10DOTS 0x04
 #define LCD_5x8DOTS 0x00
 
-class Adafruit_LiquidCrystal : public printf {
+#ifndef LOW
+#define LOW 0x00
+#endif
+#ifndef HIGH
+#define HIGH 1
+#endif
+
+#define DEC 10
+#define HEX 16
+#define OCT 8
+#define BIN 2
+
+
+
+
+class Print
+{
+
+private:
+	int write_error;
+	size_t printNumber(unsigned long, uint8_t);
+	size_t printFloat(double, uint8_t);
+protected:
+	void setWriteError(int err = 1) { write_error = err; }
 public:
-	Adafruit_LiquidCrystal(uint8_t rs, uint8_t enable,
-		uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3,
-		uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7);
-	Adafruit_LiquidCrystal(uint8_t rs, uint8_t rw, uint8_t enable,
-		uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3,
-		uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7);
-	Adafruit_LiquidCrystal(uint8_t rs, uint8_t rw, uint8_t enable,
-		uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3);
-	Adafruit_LiquidCrystal(uint8_t rs, uint8_t enable,
-		uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3);
+	Print() : write_error(0) {}
 
+	int getWriteError() { return write_error; }
+	void clearWriteError() { setWriteError(0); }
+
+	virtual size_t write(uint8_t) = 0;
+	size_t write(const char *str) {
+		if (str == NULL) return 0;
+		return write((const uint8_t *)str, strlen(str));
+	}
+	virtual size_t write(const uint8_t *buffer, size_t size);
+	size_t write(const char *buffer, size_t size) {
+		return write((const uint8_t *)buffer, size);
+	}
+
+	//		size_t print(const __FlashStringHelper *);
+	size_t print(const string &);
+	size_t print(const char[]);
+	size_t print(char);
+	size_t print(unsigned char, int = DEC);
+	size_t print(int, int = DEC);
+	size_t print(unsigned int, int = DEC);
+	size_t print(long, int = DEC);
+	size_t print(unsigned long, int = DEC);
+	size_t print(double, int = 2);
+	//		size_t print(const Printable&);
+
+	//		size_t println(const __FlashStringHelper *);
+	size_t println(const string &s);
+	size_t println(const char[]);
+	size_t println(char);
+	size_t println(unsigned char, int = DEC);
+	size_t println(int, int = DEC);
+	size_t println(unsigned int, int = DEC);
+	size_t println(long, int = DEC);
+	size_t println(unsigned long, int = DEC);
+	size_t println(double, int = 2);
+	//		size_t println(const Printable&);
+	size_t println(void);
+
+};
+
+
+class Adafruit_LiquidCrystal : public Print  {
+public:
+	/*
+	Adafruit_LiquidCrystal(uint8_t rs, uint8_t enable,
+		uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3,
+		uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7);
+	Adafruit_LiquidCrystal(uint8_t rs, uint8_t rw, uint8_t enable,
+		uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3,
+		uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7);
+	Adafruit_LiquidCrystal(uint8_t rs, uint8_t rw, uint8_t enable,
+		uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3);
+	Adafruit_LiquidCrystal(uint8_t rs, uint8_t enable,
+		uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3);
+		*/
 	Adafruit_LiquidCrystal(uint8_t i2cAddr);
-	Adafruit_LiquidCrystal(uint8_t data, uint8_t clock, uint8_t latch);
 
-	void init(uint8_t fourbitmode, uint8_t rs, uint8_t rw, uint8_t enable,
-		uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3,
-		uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7);
+//	Adafruit_LiquidCrystal(uint8_t data, uint8_t clock, uint8_t latch);
+
+//	void init(uint8_t fourbitmode, uint8_t rs, uint8_t rw, uint8_t enable,
+//		uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3,
+//		uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7);
 
 	void begin(uint8_t cols, uint8_t rows, uint8_t charsize = LCD_5x8DOTS);
 
@@ -123,5 +197,8 @@ private:
 	uint8_t _i2cAddr;
 	MCP23008 _i2c;
 };
+
+
+
 
 #endif

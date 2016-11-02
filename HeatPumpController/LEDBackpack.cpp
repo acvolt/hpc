@@ -226,8 +226,8 @@ Smith_LEDBackpack::Smith_LEDBackpack(void) {
 void Smith_LEDBackpack::begin(__uint32_t _addr = 0x70, int _fd = 0) {
 	i2c_addr = _addr;
 	i2c_file = _fd;
-
-	i2cDev.i2cSetup();
+//	Smith_I2C i2cDev = Smith_I2C(_addr);
+	i2cDev.i2cSetup(_addr);
 
 	char buffer[1] = { 0x21 };
 	i2cDev.i2cWriteByte(i2c_addr, buffer[0]);
@@ -260,47 +260,49 @@ void Smith_LEDBackpack::writeDisplay(void) {
 
 	int length = 8;
 	unsigned char buffer[1] = { 0x0 };
+
+	/*
 	__uint8_t newBuffer[16];
-	int position = 0;
+
 	void* newArray;
 	newArray = displaybuffer;
 
 //	for (int i = 0; i < 16; i++)
 //	{
 		newBuffer[1] = *static_cast<__uint8_t*>(newArray);
-		newArray++;
+		newArray+= 1;
 		newBuffer[0] = *static_cast<__uint8_t*>(newArray);
-		newArray++;
+		newArray+=1;
 		newBuffer[3] = *static_cast<__uint8_t*>(newArray);
-		newArray++;
+		newArray+=1;
 		newBuffer[2] = *static_cast<__uint8_t*>(newArray);
-		newArray++;
+		newArray+=1;
 		newBuffer[5] = *static_cast<__uint8_t*>(newArray);
-		newArray++;
+		newArray+=1;
 		newBuffer[4] = *static_cast<__uint8_t*>(newArray);
-		newArray++;
+		newArray+=1;
 		newBuffer[7] = *static_cast<__uint8_t*>(newArray);
-		newArray++;
+		newArray+=1;
 		newBuffer[6] = *static_cast<__uint8_t*>(newArray);
-		newArray++;
+		newArray+=1;
 		newBuffer[9] = *static_cast<__uint8_t*>(newArray);
-		newArray++;
+		newArray += 1;
 		newBuffer[8] = *static_cast<__uint8_t*>(newArray);
-		newArray++;
+		newArray += 1;
 		newBuffer[11] = *static_cast<__uint8_t*>(newArray);
-		newArray++;
+		newArray += 1;
 		newBuffer[10] = *static_cast<__uint8_t*>(newArray);
-		newArray++;
+		newArray += 1;
 		newBuffer[13] = *static_cast<__uint8_t*>(newArray);
-		newArray++;
+		newArray += 1;
 		newBuffer[12] = *static_cast<__uint8_t*>(newArray);
-		newArray++;
+		newArray += 1;
 		newBuffer[15] = *static_cast<__uint8_t*>(newArray);
-		newArray++;
+		newArray += 1;
 		newBuffer[14] = *static_cast<__uint8_t*>(newArray);
 
 
-//	}
+//	} */
 		/*
 	if (ioctl(i2c_file, I2C_SLAVE, i2c_addr) < 0)
 	{
