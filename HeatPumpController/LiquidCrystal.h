@@ -8,7 +8,7 @@
 #include <cstring>
 #include <string>
 //#include "Print.h"
-#include "MCP23008.h"
+#include "LCD_MCP23008.h"
 #include <unistd.h>
 #include <printf.h>
 
