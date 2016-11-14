@@ -195,7 +195,7 @@ private:
 	uint8_t _SPIbuff;
 
 	uint8_t _i2cAddr;
-	MCP23008 _i2c;
+	LCD_MCP23008 _i2c;
 };
 
 

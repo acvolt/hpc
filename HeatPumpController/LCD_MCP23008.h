@@ -12,7 +12,9 @@
 #define OUTPUT 1
 #define CHANGE 1
 #define FALLING 2
+#ifndef HIGH
 #define HIGH 0x01
+#endif
 
 //For compatibility from Arduino Library
 #define bitRead(value, bit) (((value) >> (bit)) & 0x01)
@@ -20,7 +22,7 @@
 #define bitClear(value, bit) ((value) &= ~(1UL << (bit)))
 #define bitWrite(value, bit, bitvalue) (bitvalue ? bitSet(value, bit) : bitClear(value, bit))
 
-class MCP23008 {
+class LCD_MCP23008 {
 public:
 //	MCP23008() { _i2cdev = Smith_I2C(0x24); }
 	void begin(uint8_t addr);

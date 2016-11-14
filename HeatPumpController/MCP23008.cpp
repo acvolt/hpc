@@ -5,7 +5,7 @@
 
 
 
-Smith_I2C _i2cdev = Smith_I2C(0x24);
+Smith_I2C _i2cdev = Smith_I2C(0x21);
 
 
 /**
@@ -60,14 +60,14 @@ void MCP23008::writeRegister(uint8_t regAddr, uint8_t regValue) {
 	*/
 
 //	_i2cdev.i2cWriteBlock(i2caddr, &regAddr, &regValue, 1);
-	printf("Write Register %x with value %x \n", regAddr, regValue);
+//	printf("Write Register %x with value %x \n", regAddr, regValue);
 //	_i2cdev.i2cWriteByteData(i2caddr, regAddr, regValue);
 //	printf("WR return is %d \n",);
 	_i2cdev.smbus_write_reg_byte(i2caddr, regAddr, regValue);
 //	usleep(1000);
 
-	uint8_t temp = readRegister(regAddr);
-	printf("After writing register reads %x \n", temp);
+//	uint8_t temp = readRegister(regAddr);
+//	printf("After writing register reads %x \n", temp);
 }
 
 
@@ -84,11 +84,11 @@ void MCP23008::updateRegisterBit(uint8_t pin, uint8_t pValue, uint8_t portAaddr)
 
 	// set the value for the particular bit
 
-	printf("A Pin is %x pv is %x Orig is %x Register is %x RegValue is %x \n", pin, pValue, portAaddr, regAddr, regValue);
+//	printf("A Pin is %x pv is %x Orig is %x Register is %x RegValue is %x \n", pin, pValue, portAaddr, regAddr, regValue);
 	bitWrite(regValue, bit, pValue);
-	printf("B Pin is %x pv is %x Orig is %x Register is %x RegValue is %x \n", pin, pValue, portAaddr, regAddr, regValue);
+//	printf("B Pin is %x pv is %x Orig is %x Register is %x RegValue is %x \n", pin, pValue, portAaddr, regAddr, regValue);
 	writeRegister(regAddr, regValue);
-	printf("\n");
+//	printf("\n");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -113,7 +113,7 @@ void MCP23008::begin(uint8_t addr) {
 	writeRegister(MCP23008_INTF, 0);
 	writeRegister(MCP23008_INTCAP, 0);
 	writeRegister(MCP23008_GPIO, 0);
-	printf("Just ended write things to 0\n");
+//	printf("Just ended write things to 0\n");
 	writeRegister(MCP23008_IOCON, 0x20);
 	// set defaults!
 
@@ -170,16 +170,16 @@ void MCP23008::digitalWrite(uint8_t pin, uint8_t d) {
 	// read the current GPIO output latches
 	uint8_t regAddr = regForPin(pin, MCP23008_OLAT);
 	
-	printf("GPIO Register Address %x \n", regAddr);
+//	printf("GPIO Register Address %x \n", regAddr);
 	
 	gpio = readRegister(MCP23008_GPIO);
 
-	printf("GPIO is %x PIN is %x \n", gpio, pin);
+//	printf("GPIO is %x PIN is %x \n", gpio, pin);
 
 	// set the pin and direction
 	bitWrite(gpio, bit, d);
 
-	printf("GPIO is %x after bitWrite \n", gpio);
+//	printf("GPIO is %x after bitWrite \n", gpio);
 
 	// write the new GPIO
 //	regAddr = regForPin(pin, MCP23008_GPIO);

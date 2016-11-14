@@ -41,6 +41,12 @@
     <ClCompile Include="LiquidCrystal.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
+    <ClCompile Include="LCD_MCP23008.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="Fram.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Makefile" />
@@ -74,6 +80,12 @@
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="LiquidCrystal.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="LCD_MCP23008.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Fram.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>

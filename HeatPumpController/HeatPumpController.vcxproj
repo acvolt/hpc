@@ -63,7 +63,9 @@
   <ItemDefinitionGroup>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Fram.cpp" />
     <ClCompile Include="HeatPumpController.cpp" />
+    <ClCompile Include="LCD_MCP23008.cpp" />
     <ClCompile Include="LEDBackpack.cpp" />
     <ClCompile Include="LiquidCrystal.cpp" />
     <ClCompile Include="MCP23008.cpp" />
@@ -78,7 +80,9 @@
     <None Include="release.mak" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Fram.h" />
     <ClInclude Include="HeatPumpController.h" />
+    <ClInclude Include="LCD_MCP23008.h" />
     <ClInclude Include="LEDBackpack.h" />
     <ClInclude Include="LiquidCrystal.h" />
     <ClInclude Include="MCP23008.h" />

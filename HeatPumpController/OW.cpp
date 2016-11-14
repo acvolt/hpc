@@ -2,7 +2,7 @@
 #include "Smith_I2C.h"
 #include <iostream>
 #include <stdio.h>
-
+#include <stdexcept>
 
 using namespace std;
 
@@ -829,6 +829,12 @@ float DS18B20::getTempF(uint8_t* ROM)
 
 	short int temperature;
 	temperature = ((scratchpad[1] << 8 | scratchpad[0]));
+//	printf("\n gtf temperature is %x at %x \n ", temperature, ROM[0]);
+	if (temperature == 0xffffffff) {
+		printf("\n Read Error device %x \n", ROM[7]);
+		throw std::__throw_out_of_range;
+		return -40;
+	}
 	float conversion;
 	if (scratchpad[1] & 0x80)
 	{
@@ -843,7 +849,7 @@ float DS18B20::getTempF(uint8_t* ROM)
 	{
 		return DEVICE_DISCONNECTED_F;
 	}
-	printf("ROM[1] %x Temperature is %f\n", ROM[1], ((conversion*1.8 + 32)));
+//	printf("ROM[1] %x Temperature is %f\n", ROM[1], ((conversion*1.8 + 32)));
 //	return((float)(temperature.temperature * 0.0140625) + 32);
 	return ((conversion*1.8)+32);
 	//First byte is Temp LSB, 2nd is Temp MSB

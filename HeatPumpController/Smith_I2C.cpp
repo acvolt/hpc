@@ -232,7 +232,7 @@ void Smith_I2C::i2cMultiWriteOneTwo(__uint8_t addr, __uint8_t* reg, __uint8_t re
 		}
 	};
 
-	printf("Reg1=%x Reg2=%x Reg3=%x\n", *reinterpret_cast<char*>(reg), *reinterpret_cast<char*>(reg + 1), *reinterpret_cast<char*>(reg + 2));
+//	printf("Reg1=%x Reg2=%x Reg3=%x\n", *reinterpret_cast<char*>(reg), *reinterpret_cast<char*>(reg + 1), *reinterpret_cast<char*>(reg + 2));
 	struct i2c_rdwr_ioctl_data rdwr_data = {};
 	rdwr_data.msgs = rdwr_msgs;
 	rdwr_data.nmsgs = 2;
